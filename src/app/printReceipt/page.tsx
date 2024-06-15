@@ -7,13 +7,16 @@ import React, { useEffect, useState, useRef } from 'react'
 const Page = () => {
     const [settings, setSettings] = useState(null)
     const searchParams = useSearchParams()
+
     const amount = searchParams.get('amount')
+    const quantity = searchParams.get('quantity')
+
     const numericAmount = amount ? Number(amount) : undefined
+    const numericQuantity = quantity ? Number(quantity) : undefined
 
     // Create a ref for the receipt component
     const receiptRef = useRef(null);
 
-    // Print function
     const handlePrint = () => {
         if (receiptRef.current) {
             window.print();
@@ -24,9 +27,9 @@ const Page = () => {
         const res = await getSettings()
         setSettings(res)
     }
-    
+
     useEffect(() => {
-        fetchSettings()      
+        fetchSettings()
     }, [])
 
     useEffect(() => {
@@ -36,29 +39,32 @@ const Page = () => {
         }
     }, [settings])
 
+    const renderReceipts = () => {
+        if (!settings || !numericQuantity) return null;
+        // @ts-ignore
+        const startTicketNumber = settings.currentTicketNumber;
+        return Array.from({ length: numericQuantity }, (_, index) => {
+            const ticketNumber = startTicketNumber - numericQuantity + 1 + index;
+            return (
+                <div ref={receiptRef} className='h-[100vh] p-2'>
+                    <Receipt
+                        key={ticketNumber}
+                        // @ts-ignore
+                        receiptSetting={{ ...settings, currentTicketNumber: ticketNumber }}
+                        amount={numericAmount}
+                    />
+                </div>
+            );
+        });
+    };
+
     return (
         <section className=''>
-            <div ref={receiptRef} className='h-[100vh] p-2'>
-                {settings && (
-                    <Receipt receiptSetting={settings} amount={numericAmount} />
-                )}
-            </div>
-            <div ref={receiptRef} className='h-[100vh] p-2'>
-                {settings && (
-                    <Receipt receiptSetting={settings} amount={numericAmount} />
-                )}
-            </div>
-            {/* <button
-                onClick={handlePrint}
-                className="mt-4 px-4 py-2 bg-blue-500 text-white rounded-md no-print"
-            >
-                Print Receipt
-            </button> */}
+
+            {settings && renderReceipts()}
+
         </section>
     )
 }
 
 export default Page
-
-
-

@@ -1,7 +1,9 @@
-import React from 'react';
+import React, { useState } from 'react';
 import MyInput from './inputs/myInput';
 import { createTicket } from '@/lib/apiRequests';
 import { useRouter } from 'next/navigation';
+import { FaCheck } from 'react-icons/fa6';
+import Image from 'next/image';
 
 interface Props {
     categories: Category[];
@@ -26,13 +28,12 @@ const GenerateTicket = ({
     setResponse,
 }: Props) => {
 
-
     const router = useRouter()
-    const handleSelectChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-        const categoryId = parseInt(e.target.value);
-        const selected = categories.find((cat) => cat.id === categoryId) || null;
-        setSelectedCategory(selected);
-    };
+    // const handleSelectChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    //     const categoryId = parseInt(e.target.value);
+    //     const selected = categories.find((cat) => cat.id === categoryId) || null;
+    //     setSelectedCategory(selected);
+    // };
 
     const handleQuantityChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setQuantity(e.target.value ? parseInt(e.target.value) : undefined);
@@ -46,7 +47,7 @@ const GenerateTicket = ({
         const body = {
             category_Id: selectedCategory?.id,
             quantity,
-            amount: amount ?? selectedCategory?.price! * quantity!,
+            amount: amount
         };
 
         const res = await createTicket(body);
@@ -55,13 +56,36 @@ const GenerateTicket = ({
         setAmount(undefined);
         setSelectedCategory(null);
 
-        router.push(`/printReceipt?amount=${amount}`)
+        router.push(`/printReceipt?amount=${amount}&quantity=${quantity}`)
     };
+
+
+    const handleCategoryCheck = (cat: Category) => {
+        selectedCategory?.id == cat.id ? setSelectedCategory(null) : setSelectedCategory(cat)
+    }
 
     return (
         <div className="p-4 border border-gray-700 rounded-lg mt-4 flex flex-col justify-center">
             <h3 className="font-bold text-lg text-center mb-4">Generate a Ticket</h3>
-            <div className="mb-4">
+
+
+
+            <div className='flex gap-3 flex-wrap my-4'>
+                {categories.map((cat) => (
+                    <>
+                        <button key={cat.id} onClick={() => { handleCategoryCheck(cat) }} className={` h-24 w-20 flex flex-col justify-center items-center gap-x-2 border  border-primary rounded-lg  ${selectedCategory?.id == cat.id ? "bg-primary text-white font-bold" : ""}`}>
+
+                            {/* {selectedCategory?.id == cat.id && <div><FaCheck /></div>} */}                                                 
+                                <Image src={`/category_images/images.jpeg`} alt='Category Image' height={20} width={20} />                               
+                                <p>{cat.name}</p>
+                                <p className='text-xs'>Rs {cat.price}</p>
+                               
+                        </button>
+                    </>
+                ))}
+            </div>
+
+            {/* <div className="mb-4">
                 <label htmlFor="categorySelect" className="block text-sm font-medium text-gray-700">
                     Select Category
                 </label>
@@ -78,7 +102,7 @@ const GenerateTicket = ({
                         </option>
                     ))}
                 </select>
-            </div>
+            </div> */}
             <div className="mb-4">
                 <MyInput
                     label="Quantity"

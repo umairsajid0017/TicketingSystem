@@ -6,8 +6,8 @@ export default async function Home() {
 
   return (
     <main >
-       <TopNavBar/>
-      <HomePage/>
+      <TopNavBar />
+      <HomePage />
     </main>
   );
 }

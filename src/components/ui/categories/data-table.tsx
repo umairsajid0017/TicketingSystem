@@ -22,15 +22,18 @@ import {
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { useState } from "react"
+import { toggleCategoryStatus } from "@/lib/apiRequests"
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[]
   data: TData[]
+  setResponse : any
 }
 
 export function DataTable<TData, TValue>({
   columns,
   data,
+  setResponse 
 }: DataTableProps<TData, TValue>) {
 
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>(
@@ -49,19 +52,23 @@ export function DataTable<TData, TValue>({
     },
   })
 
+
+
+  // Function to toggle category status
+  const handleStatusChange = async (category: Category) => {
+    const body = {
+      id: category.id,
+      name: category.name,
+      price: category.price,
+      is_active: category.is_active == 1 ? 0 : category.is_active == 0 ? 1 : 0
+    }
+    // Send a request to your backend to update the category's status
+    const res = await toggleCategoryStatus(category.id, body)
+    setResponse(res)
+  };
+
   return (
     <div>
-      {/* code for filtering upto line 64*/}
-      <div className="flex items-center py-4">
-        <Input
-          placeholder="Filter tickets based on categories..."
-          value={(table.getColumn("category_name")?.getFilterValue() as string) ?? ""}
-          onChange={(event) =>
-            table.getColumn("category_name")?.setFilterValue(event.target.value)
-          }
-          className="max-w-sm"
-        />
-      </div>
 
       <div className="rounded-md border">
         <Table>
@@ -92,7 +99,25 @@ export function DataTable<TData, TValue>({
                 >
                   {row.getVisibleCells().map((cell) => (
                     <TableCell key={cell.id}>
-                      {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                      {/* {flexRender(cell.column.columnDef.cell, cell.getContext())} */}
+                      {cell.column.id === 'is_active' ? (
+                        <button
+                          onClick={() => {
+                            // Call the handleStatusChange function with the row data and updateCategories callback
+                            // @ts-ignore
+                            handleStatusChange(row.original);
+                          }}
+                          className={`px-4 py-2 rounded ${
+                            // @ts-ignore
+                            row.original.is_active === 1 ? 'bg-green-500' : 'bg-red-500'
+                            } text-white`}
+                        >
+                          {/*  @ts-ignore */}
+                          {row.original.is_active === 1 ? 'Active' : 'Inactive'}
+                        </button>
+                      ) : (
+                        flexRender(cell.column.columnDef.cell, cell.getContext())
+                      )}
                     </TableCell>
                   ))}
                 </TableRow>

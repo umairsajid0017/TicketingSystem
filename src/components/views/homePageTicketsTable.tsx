@@ -1,7 +1,7 @@
 'use client'
 import { getAllTickets } from "@/lib/apiRequests"
-import { Ticket, columns } from "../ui/tickets/columns"
-import { DataTable } from "../ui/data-table"
+import { Ticket, columns } from "../ui/homePageTickets/columns"
+import { DataTable } from "../ui/homePageTickets/data-table"
 import { useEffect, useState } from "react"
 import MyDateInput from "../shared/inputs/myDateInput"
 
@@ -9,9 +9,10 @@ interface Props {
   response?: any
   tickets : Ticket[]
   setTickets: any
+  categories : Category[]
 }
 
-export default function TicketsTable({ response , tickets , setTickets }: Props) {
+export default function TicketsTable({ response , tickets , setTickets , categories }: Props) {
   
   const [filteredTickets, setFilteredTickets] = useState<Ticket[]>([]);
   const [startDate, setStartDate] = useState<string>("");
@@ -69,7 +70,7 @@ export default function TicketsTable({ response , tickets , setTickets }: Props)
           onChange={(e) => setEndDate(e.target.value)}
         />
       </div>
-      <DataTable columns={columns} data={filteredTickets} />
+      <DataTable columns={columns} data={filteredTickets} categories={categories}/>
     </div>
   );
 }

@@ -2,8 +2,8 @@
 import { useState, useEffect } from "react";
 import { createTicket, getCategories } from "@/lib/apiRequests";
 import GenerateTicket from "../shared/generateTicket";
-import TicketsTable from "./ticketsTable";
-import { Ticket } from "../ui/tickets/columns";
+import TicketsTable from "./homePageTicketsTable";
+import { Ticket } from "../ui/homePageTickets/columns";
 
 const HomePage = () => {
     const [tickets, setTickets] = useState<Ticket[]>([]);
@@ -15,22 +15,27 @@ const HomePage = () => {
 
     const fetchCategories = async () => {
         const data = await getCategories();
-        setCategories(data.categories);
+        const activeCategories = data.categories.filter((category:Category) => category.is_active === 1);
+        setCategories(activeCategories);
+        console.log(activeCategories);
     };
+    
 
     useEffect(() => {
         fetchCategories();
     }, []);
 
     useEffect(() => {
-        if (selectedCategory && quantity) {
-            setAmount(selectedCategory.price! * quantity);
+        if (selectedCategory != null && quantity) {
+            setAmount(selectedCategory.price!);
+        } else if (selectedCategory == null) {
+            setAmount(0)
         }
     }, [selectedCategory, quantity]);
 
     return (
         <section>
-            <div className="grid grid-cols-[25%,75%]">
+            <div className="grid grid-cols-[40%,60%]">
                 <div className="h-screen flex flex-col px-2 py-4 justify-start">
                     <GenerateTicket
                         categories={categories}
@@ -45,12 +50,12 @@ const HomePage = () => {
                     />
                     <div className="w-40 h-16 flex justify-center items-center text-center text-3xl my-auto bg-black text-white mx-auto mt-10 rounded-lg">
                         <p>
-                            Rs {!amount ? "0" : amount}
+                            Rs {amount && quantity ? amount * quantity : 0}
                         </p>
                     </div>
                 </div>
                 <div>
-                    <TicketsTable response={response} tickets={tickets} setTickets={setTickets}/>
+                    <TicketsTable response={response} tickets={tickets} setTickets={setTickets} categories={categories} />
                 </div>
             </div>
         </section>

@@ -15,20 +15,23 @@ export async function GET(req: NextRequest ,  { params: { id } }: { params: { id
     }
 }
 
-export async function PUT(req: NextRequest , { params: { id } }: { params: { id: string } }) {
+export async function PUT(req: NextRequest, { params: { id } }: { params: { id: string } }) {
+    
     const categoryId = id as string;
     try {
-        const { name, price } = await req.json();
-        if (!name || !price) {
-            return NextResponse.json({ error: 'Name and price are required' }, { status: 400 });
-        }
-        await db.query('UPDATE categories SET name = ?, price = ? WHERE id = ?', [name, price, categoryId]);
-        return NextResponse.json({success : 'Category updated successfully'}, { status: 200 });
+      const { name, price, is_active } = await req.json();
+      console.log( "name : " , name , "and price is : " , price , "and active is: " , is_active)  
+      if (!name || !price) {
+        return NextResponse.json({ error: 'Name and price are required' }, { status: 400 });
+      }
+      await db.query('UPDATE categories SET name = ?, price = ?, is_active = ? WHERE id = ?', [name, price, is_active, categoryId]);
+      return NextResponse.json({ success: 'Category updated successfully' }, { status: 200 });
     } catch (error) {
-        console.error(error);
-        return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });
+      console.error(error);
+      return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });
     }
-}
+  }
+  
 
 export async function DELETE(req: NextRequest , { params: { id } }: { params: { id: string } }) {
     const categoryId = id as string;

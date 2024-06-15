@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import MyInput from '../shared/inputs/myInput';
 import MyPrimaryButton from '../shared/myPrimaryButton';
 import MyCheckbox from '../shared/inputs/myCheckbox';
+import { updateSettings } from '@/lib/apiRequests';
 
 
 interface Props {
@@ -28,9 +29,11 @@ const ReceiptSetting = ({receiptSetting , setReceiptSetting}:Props) => {
         }));
     };
 
-    const handleClickFunction = () => {
+    const handleClickFunction = async() => {
         // Handle the button click logic here
-        console.log(receiptSetting);
+       
+       const res = await updateSettings(receiptSetting)
+       
     };
 
     return (

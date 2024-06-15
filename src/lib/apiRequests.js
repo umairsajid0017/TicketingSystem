@@ -1,4 +1,4 @@
-import { createCategoryEndpoint, getCategoriesEndpoint, createTicketEndpoint, getAllTicketsEndpoint, getSettingsEndpoint } from './endpoints'
+import { createCategoryEndpoint, getCategoriesEndpoint, createTicketEndpoint, getAllTicketsEndpoint, getSettingsEndpoint, updateCategoryEndpoint, uploadImageEndpoint } from './endpoints'
 
 
 export const getAllTickets = async (body) => {
@@ -59,6 +59,23 @@ export const createCategory = async (body) => {
     }
 }
 
+export const toggleCategoryStatus = async ( id , body) => {
+    console.log(body)
+    try {
+        const res = await fetch(`${updateCategoryEndpoint}/${id}`,{
+            method : 'PUT' , 
+            body : JSON.stringify(body)
+        })
+        if (!res.ok) {
+            throw new Error('Failed to update category');
+        }
+        return res.json();
+    } catch (error) {
+        console.error('Error updating category:', error);
+        return { error: true, error_msg: error }
+    }
+}
+
 export const getSettings = async () => {
     try {
         const res = await fetch(getSettingsEndpoint)
@@ -71,3 +88,36 @@ export const getSettings = async () => {
         return { error: true, error_msg: error }
     }
 }
+
+export const updateSettings = async (body) => {
+    try {
+        const res = await fetch(getSettingsEndpoint,{
+            method : 'PUT' ,
+            body : JSON.stringify(body)
+        })
+        if (!res.ok) {
+            throw new Error('Failed to update settings');
+        }
+        return res.json();
+    } catch (error) {
+        console.error('Error updating settings:', error);
+        return { error: true, error_msg: error }
+    }
+}
+
+export const uploadImage = async (body) => {
+    try {
+        const res = await fetch(uploadImageEndpoint , {
+            method : 'POST',
+            body 
+        })
+        if (!res.ok) {
+            throw new Error('Failed to upload Image');
+        }
+        return res.json();
+    } catch (error) {
+        console.error('Error uploading image', error);
+        return { error: true, error_msg: error }
+    }
+}
+

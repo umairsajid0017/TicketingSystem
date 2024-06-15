@@ -1,5 +1,5 @@
 import db from "@/lib/db";
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 
 export async function GET() {
     try {
@@ -31,7 +31,34 @@ export async function GET() {
         }, {});
 
         return NextResponse.json(transformedSettings, { status: 200 });
-    } catch (error:any) {
+    } catch (error: any) {
         return NextResponse.json({ error: error.message }, { status: 500 });
+    }
+}
+
+
+
+export async function PUT(req: NextRequest) {
+    try {
+        const { title, bottomText, showAmount, showDate } = await req.json()
+        if (!title || !bottomText){
+            return NextResponse.json({"message" : "please provide title and bottom text"})
+
+        }
+        await db.execute(
+            `UPDATE settings
+             SET value = CASE
+               WHEN label = 'receipt_title' THEN ?
+               WHEN label = 'receipt_bottom_text' THEN ?
+               WHEN label = 'date_visible' THEN ?
+               WHEN label = 'amount_visible' THEN ?
+             END
+             WHERE label IN ('receipt_title', 'receipt_bottom_text', 'date_visible', 'amount_visible')`,
+            [title, bottomText, showDate, showAmount]
+          );
+
+          return NextResponse.json({"message" : "successfully updated settings"},{status : 200})
+    } catch ( error : any ){
+        return NextResponse.json({error : error.message}, {status : 500})
     }
 }

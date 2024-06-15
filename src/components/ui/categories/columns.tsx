@@ -1,15 +1,9 @@
 "use client"
 
+import { getCategories, toggleCategoryStatus } from "@/lib/apiRequests";
 import { ColumnDef } from "@tanstack/react-table"
 
-// This type is used to define the shape of our data.
-// You can use a Zod schema here if you want.
-export type Category = {
-    id? : number
-    name : string 
-    price : number
 
-}
 
 export const columns: ColumnDef<Category>[] = [
     {
@@ -24,5 +18,21 @@ export const columns: ColumnDef<Category>[] = [
         accessorKey: "price",
         header: "Price",
     },    
+    {
+        accessorKey: 'is_active', // assuming your category data has an 'isActive' property
+        header: 'Status',
+        // cell: info => (
+        //   <button
+        //     onClick={() => handleStatusChange(info.row.original)}
+        //     className={`px-4 py-2 rounded ${
+        //       info.row.original.is_active == 1 ? 'bg-green-500' : 'bg-red-500'
+        //     } text-white`}
+        //   >
+        //     {info.row.original.is_active == 1 ? 'Active' : 'Inactive'}
+        //   </button>
+        // ),
+      },
 ]
 screenY
+
+
