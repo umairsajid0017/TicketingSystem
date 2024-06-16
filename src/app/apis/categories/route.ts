@@ -3,7 +3,7 @@ import { NextRequest, NextResponse } from 'next/server';
 
 export async function GET() {
     try {
-        const [categories] = await db.query('SELECT * FROM categories ');
+        const [categories] = await db.query('SELECT * FROM categories Order by id DESC');
         return NextResponse.json({ categories }, { status: 200 });
     } catch (error) {
         console.error(error);

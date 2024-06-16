@@ -35,7 +35,7 @@ const Page = () => {
     useEffect(() => {
         if (settings) {
             // Ensure handlePrint is called after the component is rendered
-            setTimeout(handlePrint, 10 * 1000);
+            setTimeout(handlePrint, 30 * 1000);
         }
     }, [settings])
 

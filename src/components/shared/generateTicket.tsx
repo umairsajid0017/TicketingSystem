@@ -61,24 +61,29 @@ const GenerateTicket = ({
         // Open the URL in a new tab
         const printWindow = window.open(url, '_blank');
 
-    // Function to close the print tab
-    const closePrintTab = () => {
-        printWindow?.close();
-        window.removeEventListener('afterprint', closePrintTab);
-    };
+        // Function to close the print tab
+        const closePrintTab = () => {
+            printWindow?.close();
+            window.removeEventListener('afterprint', closePrintTab);
+        };
 
-    // Listen for afterprint event to close the print tab after printing or cancelling
-    window.addEventListener('afterprint', closePrintTab);
+        // Listen for afterprint event to close the print tab after printing or cancelling
+        window.addEventListener('afterprint', closePrintTab);
 
-    // Print the page programmatically
-    printWindow?.print();
+        // Print the page programmatically
+        printWindow?.print();
 
-    // Navigate programmatically without reloading the current page
-    router.push('/');
+        // Navigate programmatically without reloading the current page
+        router.push('/');
     };
 
 
     const handleCategoryCheck = (cat: Category) => {
+
+        if (!quantity) {
+            setQuantity(1)
+        }
+
         selectedCategory?.id == cat.id ? setSelectedCategory(null) : setSelectedCategory(cat)
     }
 
@@ -93,11 +98,11 @@ const GenerateTicket = ({
                     <>
                         <button key={cat.id} onClick={() => { handleCategoryCheck(cat) }} className={` h-24 w-20 flex flex-col justify-center items-center gap-x-2 border  border-primary rounded-lg  ${selectedCategory?.id == cat.id ? "bg-primary text-white font-bold" : ""}`}>
 
-                            {/* {selectedCategory?.id == cat.id && <div><FaCheck /></div>} */}                                                 
-                                <Image src={`/category_images/images.jpeg`} alt='Category Image' height={20} width={20} />                               
-                                <p>{cat.name}</p>
-                                <p className='text-xs'>Rs {cat.price}</p>
-                               
+                            {/* {selectedCategory?.id == cat.id && <div><FaCheck /></div>} */}
+                            <Image src={`/category_images/${cat.image}`} alt='Category Image' height={20} width={20} />
+                            <p>{cat.name}</p>
+                            <p className='text-xs'>Rs {cat.price}</p>
+
                         </button>
                     </>
                 ))}
