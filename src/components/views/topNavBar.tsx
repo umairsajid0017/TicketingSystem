@@ -18,7 +18,7 @@ const TopNavBar = () => {
                 <Link href={'/'}>Dashboard</Link>
                 <Link href={'/categories'}>Categories</Link>
                 <Link href={'/reports'}>Reports</Link>
-                <Link href={'/reciptsSetting'}>Receipt Settings</Link>
+                <Link href={'/reciptsSetting'}>Settings</Link>
             </div>
 
             <div>

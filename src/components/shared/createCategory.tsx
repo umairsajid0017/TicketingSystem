@@ -51,9 +51,9 @@ const CreateCategory = ({ category, setCategory, setResponse, categoryImage, set
 
 
     return (
-        <div className="p-4 m-2 border border-gray-700 rounded-lg w-1/3 mx-auto flex flex-col justify-center">
+        <div className="p-4 m-2 border border-gray-700 rounded-lg w-1/2 mx-auto flex flex-col justify-center">
             <h3 className="font-bold text-lg text-center mb-4">Create a Category</h3>
-            <div className='flex gap-x-6 items-center justify-between'>
+            <div className='gap-x-6 items-center justify-between'>
 
                 <div className="mb-4">
                     <MyInput
@@ -81,13 +81,13 @@ const CreateCategory = ({ category, setCategory, setResponse, categoryImage, set
                 </div>
                 <div className="mb-4">
                     <label>
-                        Category Image
-                        <input
+                        Category Image: 
+                    </label>
+                    <input
                             type='file'
                             name='image'
                             onChange={(e) => setCategoryImage(e.target.files?.[0])}
                         />
-                    </label>
                 </div>
             </div>
             <div className='flex justify-end'>

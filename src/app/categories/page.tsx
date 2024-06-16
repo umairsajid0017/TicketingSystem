@@ -33,7 +33,7 @@ const Page = () => {
         setResponse={setResponse}
       />
 
-      <div className='max-w-7xl mx-auto'>
+      <div className='max-w-7xl mx-auto p-10'>
         <DataTable columns={columns} data={categories} setResponse={setResponse} />
       </div>
     </section>

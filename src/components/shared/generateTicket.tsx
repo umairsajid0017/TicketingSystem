@@ -56,7 +56,25 @@ const GenerateTicket = ({
         setAmount(undefined);
         setSelectedCategory(null);
 
-        router.push(`/printReceipt?amount=${amount}&quantity=${quantity}`)
+        const url = `/printReceipt?amount=${amount}&quantity=${quantity}`;
+
+        // Open the URL in a new tab
+        const printWindow = window.open(url, '_blank');
+
+    // Function to close the print tab
+    const closePrintTab = () => {
+        printWindow?.close();
+        window.removeEventListener('afterprint', closePrintTab);
+    };
+
+    // Listen for afterprint event to close the print tab after printing or cancelling
+    window.addEventListener('afterprint', closePrintTab);
+
+    // Print the page programmatically
+    printWindow?.print();
+
+    // Navigate programmatically without reloading the current page
+    router.push('/');
     };
 
 

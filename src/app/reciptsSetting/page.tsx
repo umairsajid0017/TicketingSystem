@@ -15,13 +15,15 @@ const Page = () => {
   return (
     <>
      <TopNavBar/>
-    <section className='grid grid-cols-[30%,70%] '>
+    <section className='grid grid-cols-[50%,40%,10%] gap-x-8 m-10'>
       <div>
         <ReceiptSetting receiptSetting={receiptSetting} setReceiptSetting={setReceiptSetting} />
       </div>
 
       <div>
         <Receipt  receiptSetting={receiptSetting}/>
+      </div>
+      <div>
       </div>
     </section>
     </>

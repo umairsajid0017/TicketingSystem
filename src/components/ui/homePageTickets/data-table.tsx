@@ -69,7 +69,7 @@ export function DataTable<TData, TValue>({ columns, data, categories }: DataTabl
    
       {/* code for filtering data based on categories upto line 95 */}
       <Select onValueChange={handleCategoryChange}>
-        <SelectTrigger className="w-[180px] bg-gray-200">
+        <SelectTrigger className="w-[180px] bg-gray-100 border-blue-300 mb-4">
           <SelectValue placeholder="Select Category" />
         </SelectTrigger>
         <SelectContent>

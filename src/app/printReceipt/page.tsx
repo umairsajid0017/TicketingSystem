@@ -35,7 +35,7 @@ const Page = () => {
     useEffect(() => {
         if (settings) {
             // Ensure handlePrint is called after the component is rendered
-            setTimeout(handlePrint, 0);
+            setTimeout(handlePrint, 10 * 1000);
         }
     }, [settings])
 
@@ -46,7 +46,7 @@ const Page = () => {
         return Array.from({ length: numericQuantity }, (_, index) => {
             const ticketNumber = startTicketNumber - numericQuantity + 1 + index;
             return (
-                <div ref={receiptRef} className='h-[100vh] p-2'>
+                <div ref={receiptRef} className='p-2'>
                     <Receipt
                         key={ticketNumber}
                         // @ts-ignore

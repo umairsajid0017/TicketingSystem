@@ -91,3 +91,40 @@
     background-color: #000080
   }
   
+  @media print {
+    @page {
+      size: 80mm 100mm; /* Page size set to 80mm x 100mm */
+      margin: 0; /* Remove margins to avoid extra space */
+    }
+  
+    body {
+      margin: 0; /* Remove body margins */
+    }
+  
+    .receipt-container {
+      page-break-after: always; /* Ensure each receipt starts on a new page */
+      width: 80mm; /* Set the width to match the page size */
+      height: 100mm; /* Set the height to match the page size */
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      box-sizing: border-box;
+      padding: 5mm; /* Adjust padding as needed */
+    }
+  
+    .receipt {
+      flex-grow: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+  
+    .receipt p {
+      margin: 0;
+      padding: 4px 0;
+    }
+  
+    .no-print {
+      display: none;
+    }
+  }
